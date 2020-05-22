@@ -73,11 +73,11 @@
         document.getElementById("yView").innerHTML = "Current Y Position: " + currY;
 
 
-        if (pointCount % 5 == 0){
-            pointsArray.push(new Point(currX, currY));
 
-            ctx.fillRect(currX, currY, 11,11);
-        }
+        pointsArray.push(new Point(currX, currY));
+
+        ctx.fillRect(currX, currY, 4,4);
+        
         pointCount = pointCount + 1;
 
         document.getElementById("arrayLength").innerHTML = "Length of Array:" + pointsArray.length.toString();
@@ -115,7 +115,7 @@
             if (dot_flag) {
                 ctx.beginPath();
                 ctx.fillStyle = x;
-                ctx.fillRect(currX, currY, 2, 2);
+                ctx.fillRect(currX, currY, 4, 4);
                 ctx.closePath();
                 dot_flag = false;
             }
@@ -135,7 +135,7 @@
     }
     </script>
     <body onload="init()">
-        <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;"></canvas>
+        <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;background: url('img/mini_0_1.png');"></canvas>
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
         <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
         <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
