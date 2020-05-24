@@ -52,9 +52,7 @@
             set.sketches.push(new Sketch(index));
             canvas = document.getElementById('can');
             var imgPath = 'img/' + index + '.png';
-            document.getElementById("MainIndex").innerHTML = mainIndex;
             document.getElementById("can").style.background = "url('" + imgPath + "')";
-            document.getElementById("LenSketches").innerHTML = set.sketches.length;
             ctx = canvas.getContext("2d");
             w = canvas.width;
             h = canvas.height;
@@ -114,23 +112,21 @@
         set.sketches[mainIndex].pointsArray.push(new Point(currX, currY));
         ctx.fillRect(currX, currY, 4,4);
         
-        document.getElementById("arrayLength").innerHTML = "Length of Array:" + set.sketches[mainIndex].pointsArray.length.toString();
 
     }
-
+    /*
     function save() {
         document.getElementById("canvasimg").style.border = "2px solid";
         var dataURL = canvas.toDataURL();
         document.getElementById("canvasimg").src = dataURL;
         document.getElementById("canvasimg").style.display = "inline";
     }
-
+    */
     function nextImage(){
 
         mainIndex ++;
         ctx.clearRect(0, 0, w, h);
         init(mainIndex);
-        document.getElementById("MainIndex").innerHTML = mainIndex;
 
     }
     
@@ -164,18 +160,15 @@
             }
         }
     }
-    //@TODO: temporary pointsArray adding to class pointsArray AFTER entire drawing cycle is over
+
     </script>
     <body onload="init(0)">
         <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;background: url('img/mini_0_1.png');"></canvas>
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
-        <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
         <input type = "button" value = "next" id = "nxt" size = "23" onclick = "nextImage()" style="position:absolute;top:55%;left:20%;">
         <p id = "xView">X</p>
         <p id = "yView">Y</p>
-        <p id = "arrayLength">Length of Points Array</p>
-        <p id = "MainIndex">MainIndex value</p>
-        <p id = "LenSketches">LenSketches</p>
+
     </body>
     </html>
 
