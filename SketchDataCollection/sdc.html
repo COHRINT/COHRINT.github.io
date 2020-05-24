@@ -1,9 +1,8 @@
 <html>
     <script type="text/javascript">
 
-    function SketchSet(name)
+    function SketchSet()
     {
-        this.name = name;
         this.sketches = [];
     }
 
@@ -35,19 +34,41 @@
         y = 2;
 
     function init(index) {
+
         if (index > 16){
-            window.alert("All Images Finished");
-            //Saving Mechanism Will Go Here
-            
+            document.getElementById("can").remove();
+            document.getElementById("xView").remove();
+            document.getElementById("yView").remove();
+            document.getElementById("nxt").remove();
+            document.getElementById("clr").remove();
+
+            var textField = document.createElement("INPUT");
+            textField.setAttribute("type", "text");
+            textField.setAttribute("placeholder", "Enter File Name");
+            document.body.appendChild(textField);
+
+            var fileButton = document.createElement("BUTTON");
+            fileButton.onclick = function(){
+                download(textField.value);return false;
+            };
+            var textButton = document.createTextNode("Download JSON");
+            fileButton.appendChild(textButton);
+            document.body.appendChild(fileButton);
+
+            /*
             var jsonString = JSON.stringify(set);
             var hiddenElement = document.createElement('a');
-
+            
+            
             hiddenElement.href = 'data:text/json;charset=utf-8,' + encodeURI(jsonString);
             hiddenElement.target = '_blank';
-            hiddenElement.download = set.name + '.json';
+            hiddenElement.download = 'yes' + '.json';
             hiddenElement.click();
+            */
 
         }
+
+
         else{
             set.sketches.push(new Sketch(index));
             canvas = document.getElementById('can');
@@ -71,6 +92,17 @@
             }, false);
         }
 
+    }
+
+    function download(filename){
+
+        var jsonString = JSON.stringify(set);
+        var hiddenElement = document.createElement('a');
+
+        hiddenElement.href = 'data:text/json;charset=utf-8,' + encodeURI(jsonString);
+        hiddenElement.target = '_blank';
+        hiddenElement.download = filename + '.json';
+        hiddenElement.click();
     }
     
     function color(obj) {
@@ -129,6 +161,12 @@
         init(mainIndex);
 
     }
+
+    function erase(){
+
+        ctx.clearRect(0, 0, w, h);
+        set.sketches[mainIndex].pointsArray = [];
+    }
     
     function findxy(res, e) {
         if (res == 'down') {
@@ -165,7 +203,8 @@
     <body onload="init(0)">
         <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;background: url('img/mini_0_1.png');"></canvas>
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
-        <input type = "button" value = "next" id = "nxt" size = "23" onclick = "nextImage()" style="position:absolute;top:55%;left:20%;">
+        <input type = "button" value = "next" id = "nxt" size = "23" onclick = "nextImage()" style="position:absolute;top:55%;left:15%;">
+        <input type = "button" value = "clear" id = "clr" size = "23" onclick = "erase()" style="position:absolute;top:55%;left:25%;">
         <p id = "xView">X</p>
         <p id = "yView">Y</p>
 
