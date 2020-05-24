@@ -1,11 +1,25 @@
 <html>
     <script type="text/javascript">
+
+    function SketchSet(name)
+    {
+        this.name = name;
+        this.sketches = [];
+    }
+
+    function Sketch(index)
+    {   
+        this.index = index;
+        this.pointsArray = [];
+
+    }
+
     function Point(x, y){
         this.x = x;
         this.y = y;
     }
 
-    var pointsArray = [];
+    var set = new SketchSet("name");
 
     var canvas, ctx, flag = false,
         prevX = 0,
@@ -14,29 +28,51 @@
         currY = 0,
         dot_flag = false;
 
-    var pointCount = 0;
+
+    var mainIndex = 0;
 
     var x = "black",
         y = 2;
-    
-    function init() {
-        canvas = document.getElementById('can');
-        ctx = canvas.getContext("2d");
-        w = canvas.width;
-        h = canvas.height;
-    
-        canvas.addEventListener("mousemove", function (e) {
-            findxy('move', e)
-        }, false);
-        canvas.addEventListener("mousedown", function (e) {
-            findxy('down', e)
-        }, false);
-        canvas.addEventListener("mouseup", function (e) {
-            findxy('up', e)
-        }, false);
-        canvas.addEventListener("mouseout", function (e) {
-            findxy('out', e)
-        }, false);
+
+    function init(index) {
+        if (index > 16){
+            window.alert("All Images Finished");
+            //Saving Mechanism Will Go Here
+            
+            var jsonString = JSON.stringify(set);
+            var hiddenElement = document.createElement('a');
+
+            hiddenElement.href = 'data:text/json;charset=utf-8,' + encodeURI(jsonString);
+            hiddenElement.target = '_blank';
+            hiddenElement.download = set.name + '.json';
+            hiddenElement.click();
+
+        }
+        else{
+            set.sketches.push(new Sketch(index));
+            canvas = document.getElementById('can');
+            var imgPath = 'img/' + index + '.png';
+            document.getElementById("MainIndex").innerHTML = mainIndex;
+            document.getElementById("can").style.background = "url('" + imgPath + "')";
+            document.getElementById("LenSketches").innerHTML = set.sketches.length;
+            ctx = canvas.getContext("2d");
+            w = canvas.width;
+            h = canvas.height;
+        
+            canvas.addEventListener("mousemove", function (e) {
+                findxy('move', e)
+            }, false);
+            canvas.addEventListener("mousedown", function (e) {
+                findxy('down', e)
+            }, false);
+            canvas.addEventListener("mouseup", function (e) {
+                findxy('up', e)
+            }, false);
+            canvas.addEventListener("mouseout", function (e) {
+                findxy('out', e)
+            }, false);
+        }
+
     }
     
     function color(obj) {
@@ -74,33 +110,28 @@
 
 
 
-        pointsArray.push(new Point(currX, currY));
-
+        //sk1.pointsArray.push(new Point(currX, currY));
+        set.sketches[mainIndex].pointsArray.push(new Point(currX, currY));
         ctx.fillRect(currX, currY, 4,4);
         
-        pointCount = pointCount + 1;
-
-        document.getElementById("arrayLength").innerHTML = "Length of Array:" + pointsArray.length.toString();
+        document.getElementById("arrayLength").innerHTML = "Length of Array:" + set.sketches[mainIndex].pointsArray.length.toString();
 
     }
-    
-    function erase() {
-        var m = confirm("Clear Canvas?");
-        if (m) {
-            ctx.clearRect(0, 0, w, h);
-            document.getElementById("canvasimg").style.display = "none";
-            pointsArray = []
-            pointCount = 0;
-            document.getElementById("arrayLength").innerHTML = "Length of Array:" + pointsArray.length.toString();
 
-        }
-    }
-    
     function save() {
         document.getElementById("canvasimg").style.border = "2px solid";
         var dataURL = canvas.toDataURL();
         document.getElementById("canvasimg").src = dataURL;
         document.getElementById("canvasimg").style.display = "inline";
+    }
+
+    function nextImage(){
+
+        mainIndex ++;
+        ctx.clearRect(0, 0, w, h);
+        init(mainIndex);
+        document.getElementById("MainIndex").innerHTML = mainIndex;
+
     }
     
     function findxy(res, e) {
@@ -133,14 +164,20 @@
             }
         }
     }
+    //@TODO: temporary pointsArray adding to class pointsArray AFTER entire drawing cycle is over
     </script>
-    <body onload="init()">
+    <body onload="init(0)">
         <canvas id="can" width="400" height="400" style="position:absolute;top:10%;left:10%;border:2px solid;background: url('img/mini_0_1.png');"></canvas>
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
         <input type="button" value="save" id="btn" size="30" onclick="save()" style="position:absolute;top:55%;left:10%;">
-        <input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:55%;left:15%;">
+        <input type = "button" value = "next" id = "nxt" size = "23" onclick = "nextImage()" style="position:absolute;top:55%;left:20%;">
         <p id = "xView">X</p>
         <p id = "yView">Y</p>
         <p id = "arrayLength">Length of Points Array</p>
+        <p id = "MainIndex">MainIndex value</p>
+        <p id = "LenSketches">LenSketches</p>
     </body>
     </html>
+
+
+    
