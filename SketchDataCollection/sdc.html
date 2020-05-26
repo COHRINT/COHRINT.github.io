@@ -1,4 +1,7 @@
 <html>
+    <title>
+        Sketch Data Collection
+    </title>
     <script type="text/javascript">
 
     function SketchSet()
@@ -55,17 +58,6 @@
             var textButton = document.createTextNode("Download JSON");
             fileButton.appendChild(textButton);
             document.body.appendChild(fileButton);
-
-            /*
-            var jsonString = JSON.stringify(set);
-            var hiddenElement = document.createElement('a');
-            
-            
-            hiddenElement.href = 'data:text/json;charset=utf-8,' + encodeURI(jsonString);
-            hiddenElement.target = '_blank';
-            hiddenElement.download = 'yes' + '.json';
-            hiddenElement.click();
-            */
 
         }
 
